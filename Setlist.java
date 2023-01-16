@@ -1,10 +1,12 @@
 import java.util.Scanner; // import Scanner class
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 
 public class Setlist{
-    final static int MAX = 20;
 
     static Scanner scnr = new Scanner(System.in);
 /*
@@ -48,7 +50,7 @@ public class Setlist{
         }
     }
 
-    public static void printWastedTime2(String wastedTime[], long wastedTimes[], String openUp[], long openTimes[], String disasterAverted[], long[] disasterTimes, String gotTime[], long[] gotTimes, String singles[], long[] singleTimes, String covers[], long[] coverTimes) {
+    public static void printWastedTime2(String wastedTime[], long wastedTimes[]) {
         int counter = 1;
         System.out.printf("%n|-----------------Wasted Time-----------------|%n%n");
         for (int i = 0; i < wastedTime.length; i++) {
@@ -66,6 +68,7 @@ public class Setlist{
     }
     
     public static void printDisasterAverted2(String disasterAverted[], long[] disasterTimes) {
+        // nice
         int counter = 1;
         System.out.printf("%n|---------------Disaster Averted---------------|%n%n");
         for (int i = 0; i < disasterAverted.length; i++) {
@@ -73,10 +76,78 @@ public class Setlist{
             long seconds = (int) disasterTimes[i] - (TimeUnit.MINUTES.toSeconds(minutes));
 
             if (counter < 10) {
-                System.out.printf("%d. %-40s %2d:%02d\n", counter++, disasterTimes[i], minutes, seconds);
+                System.out.printf("%d. %-40s %2d:%02d\n", counter++, disasterAverted[i], minutes, seconds);
             }
             else {
-                System.out.printf("%d. %-39s %2d:%02d\n", counter++, disasterTimes[i], minutes, seconds);
+                System.out.printf("%d. %-39s %2d:%02d\n", counter++, disasterAverted[i], minutes, seconds);
+            }
+        }
+        System.out.println();
+    }
+
+    public static void printOpenUp2(String openUp[], long[] openTimes) {
+        int counter = 1;
+        System.out.printf("%n|---------------Open Up---------------|%n%n");
+        for (int i = 0; i < openUp.length; i++) {
+            long minutes = (int) TimeUnit.SECONDS.toMinutes(openTimes[i]);
+            long seconds = (int) openTimes[i] - (TimeUnit.MINUTES.toSeconds(minutes));
+
+            if (counter < 10) {
+                System.out.printf("%d. %-40s %2d:%02d\n", counter++, openUp[i], minutes, seconds);
+            }
+            else {
+                System.out.printf("%d. %-39s %2d:%02d\n", counter++, openUp[i], minutes, seconds);
+            }
+        }
+        System.out.println();
+    }
+
+    public static void printGotTime2(String gotTime[], long[] gotTimes) {
+        int counter = 1;
+        System.out.printf("%n|---------------Open Up---------------|%n%n");
+        for (int i = 0; i < gotTime.length; i++) {
+            long minutes = (int) TimeUnit.SECONDS.toMinutes(gotTimes[i]);
+            long seconds = (int) gotTimes[i] - (TimeUnit.MINUTES.toSeconds(minutes));
+
+            if (counter < 10) {
+                System.out.printf("%d. %-40s %2d:%02d\n", counter++, gotTime[i], minutes, seconds);
+            }
+            else {
+                System.out.printf("%d. %-39s %2d:%02d\n", counter++, gotTime[i], minutes, seconds);
+            }
+        }
+        System.out.println();
+    }
+
+    public static void printSingles2(String singles[], long[] singleTimes) {
+        int counter = 1;
+        System.out.printf("%n|---------------Open Up---------------|%n%n");
+        for (int i = 0; i < singles.length; i++) {
+            long minutes = (int) TimeUnit.SECONDS.toMinutes(singleTimes[i]);
+            long seconds = (int) singleTimes[i] - (TimeUnit.MINUTES.toSeconds(minutes));
+
+            if (counter < 10) {
+                System.out.printf("%d. %-40s %2d:%02d\n", counter++, singles[i], minutes, seconds);
+            }
+            else {
+                System.out.printf("%d. %-39s %2d:%02d\n", counter++, singles[i], minutes, seconds);
+            }
+        }
+        System.out.println();
+    }
+
+    public static void printCovers2(String covers[], long[] coverTimes) {
+        int counter = 1;
+        System.out.printf("%n|---------------Open Up---------------|%n%n");
+        for (int i = 0; i < covers.length; i++) {
+            long minutes = (int) TimeUnit.SECONDS.toMinutes(coverTimes[i]);
+            long seconds = (int) coverTimes[i] - (TimeUnit.MINUTES.toSeconds(minutes));
+
+            if (counter < 10) {
+                System.out.printf("%d. %-40s %2d:%02d\n", counter++, covers[i], minutes, seconds);
+            }
+            else {
+                System.out.printf("%d. %-39s %2d:%02d\n", counter++, covers[i], minutes, seconds);
             }
         }
         System.out.println();
@@ -173,144 +244,331 @@ public class Setlist{
         ArrayList<String> setlist = new ArrayList<String>();
         ArrayList<Long> duration = new ArrayList<Long>();
         System.out.printf("%n------------ OPTIONS --------------%n%n");
-        System.out.printf("1. Add a song from Wasted Time%n2. Add a song from Disaster Averted%n3. Add a song from Open Up%n4. Add a song from Got Time%n5. Add a song from Singles%n6. Add a song from Covers%n7 to delete a song%n0 to quit%nEnter Choice: ");
+        System.out.printf("1. Add a song from Wasted Time%n2. Add a song from Disaster Averted%n3. Add a song from Open Up%n4. Add a song from Got Time%n5. Add a song from Singles%n6. Add a song from Covers%n7 to delete a song%n0 to quit%n%nEnter Choice: ");
         int songChoice = scnr.nextInt();
-        while (songChoice != 1 && songChoice != 2 && songChoice != 3 && songChoice != 4 && songChoice != 5 && songChoice != 6) {
+        int songNum;
+        if (songChoice == 0) {
+            return;
+        }
+        while (songChoice != 1 && songChoice != 2 && songChoice != 3 && songChoice != 4 && songChoice != 5 && songChoice != 6 && songChoice !=7) {
+            if (songChoice == 0) {
+                break;
+            }
             System.out.println("Invalid option. Please enter a valid option.");
-            System.out.printf("1. Add a song from Wasted Time%n2. Add a song from Disaster Averted%n3. Add a song from Open Up%n4. Add a song from Got Time%n5. Add a song from Singles%n6. Add a song from Covers%n7 to delete a song%n0 to quit%nEnter Choice: ");
+            System.out.printf("1. Add a song from Wasted Time%n2. Add a song from Disaster Averted%n3. Add a song from Open Up%n4. Add a song from Got Time%n5. Add a song from Singles%n6. Add a song from Covers%n7 to delete a song%n0 to quit%n%nEnter Choice: ");
             songChoice = scnr.nextInt();
         }
         while (seconds > 0) {
+            if (songChoice == 0) {
+                break;
+            }
             switch (songChoice) {
                 case 1:
-                    printWastedTime2(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes);
-                    System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
-                    int songNum = scnr.nextInt();
-                    if (songNum == 0) {
-                        break;
-                    }
-                    while (songNum >= 1 && songNum > wastedTime.length) {
-                        System.out.println("Invalid option. Please enter a valid option.");
-                        System.out.println("Enter the number of the song you would like to add: ");
+                    printWastedTime2(wastedTime, wastedTimes);
+                    boolean validInput = false;
+                    do { 
+                        System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
                         songNum = scnr.nextInt();
-                    }
-                    if (seconds - wastedTimes[songNum - 1] < 0) {
-                        System.out.println("That song is too long for the setlist. Please enter a valid option.");
-                        System.out.println("Enter the number of the song you would like to add: ");
-                        songNum = scnr.nextInt();
-                    }
-                    else {
-                        if (setlist.contains(wastedTime[songNum - 1])) {
-                            System.out.println("That song is already in the setlist. Please enter a valid option.");
-                            System.out.println("Enter the number of the song you would like to add: ");
+                        if (songNum == 0) {
+                            break;
+                        }
+                        if (songNum > wastedTime.length) {
+                            System.out.println("Invalid option. Please enter a valid option.");
+                        }
+                        if (songNum <= 0) {
+                            System.out.println("Invalid option. Please enter a valid option.");
+                        }
+                        while (songNum >= 1 && songNum > wastedTime.length) {
+                            System.out.println("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                            songNum = scnr.nextInt();
+                        }
+                        if (seconds - wastedTimes[songNum - 1] < 0) {
+                            System.out.println("That song is too long for the setlist. Please enter a valid option.");
+                            System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
                             songNum = scnr.nextInt();
                         }
                         else {
-                        setlist.add(wastedTime[songNum - 1]);
-                        System.out.println("Added song: " + wastedTime[songNum - 1]);
-                        duration.add(wastedTimes[songNum -1]);
-                        seconds -= wastedTimes[songNum - 1];
-                        numOfSongs++;
+                            if (setlist.contains(wastedTime[songNum - 1])) {
+                                System.out.println("That song is already in the setlist. Please enter a valid option.");
+                                System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                                songNum = scnr.nextInt();
+                            }
+                            if (songNum == 0) {
+                                break;
+                            }
+                            else if (!setlist.contains(wastedTime[songNum -1])) {
+                                setlist.add(wastedTime[songNum - 1]);
+                                System.out.println("Added song: " + wastedTime[songNum - 1]);
+                                duration.add(wastedTimes[songNum -1]);
+                                seconds -= wastedTimes[songNum - 1];
+                                numOfSongs++;
+                                validInput = true;
+                                break;
+                            }
+                            else {
+                                System.out.println("That song is already in the setlist. Please enter a valid option.");
+                            }
                         }
-                    }
-                    break;
+                    } while (!validInput);
+                break;
                 case 2:
-                printDisasterAverted2(disasterAverted, disasterTimes);
-                    System.out.println("Enter the number of the song you would like to add: ");
-                    songNum = scnr.nextInt();
-                    while (songNum >=1 && songNum > openUp.length) {
-                        System.out.println("Invalid option. Please enter a valid option.");
-                        System.out.println("Enter the number of the song you would like to add: ");
+                    printDisasterAverted2(disasterAverted, disasterTimes);
+                    validInput = false;
+                    do { 
+                        System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
                         songNum = scnr.nextInt();
-                    }
-                    if (seconds - openTimes[songNum - 1] < 0) {
-                        System.out.println("That song is too long for the setlist. Please enter a valid option.");
-                        System.out.println("Enter the number of the song you would like to add: ");
-                        songNum = scnr.nextInt();
-                    }
-                    else {
-                        seconds -= openTimes[songNum - 1];
-                        numOfSongs++;
-                    }
-                    break;
+                        if (songNum == 0) {
+                            break;
+                        }
+                        if (songNum > disasterAverted.length) {
+                            System.out.println("Invalid option. Please enter a valid option.");
+                        }
+                        if (songNum <= 0) {
+                            System.out.println("Invalid option. Please enter a valid option.");
+                        }
+                        while (songNum >= 1 && songNum > disasterAverted.length) {
+                            System.out.println("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                            songNum = scnr.nextInt();
+                        }
+                        if (seconds - disasterTimes[songNum - 1] < 0) {
+                            System.out.println("That song is too long for the setlist. Please enter a valid option.");
+                            System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                            songNum = scnr.nextInt();
+                        }
+                        else {
+                            if (setlist.contains(disasterAverted[songNum - 1])) {
+                                System.out.println("That song is already in the setlist. Please enter a valid option.");
+                                System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                                songNum = scnr.nextInt();
+                            }
+                            if (songNum == 0) {
+                                break;
+                            }
+                            else if (!setlist.contains(disasterAverted[songNum -1])) {
+                                setlist.add(disasterAverted[songNum - 1]);
+                                System.out.println("Added song: " + disasterAverted[songNum - 1]);
+                                duration.add(disasterTimes[songNum -1]);
+                                seconds -= disasterTimes[songNum - 1];
+                                numOfSongs++;
+                                validInput = true;
+                                break;
+                            }
+                            else {
+                                System.out.println("That song is already in the setlist. PLease enter a valid option. ");
+                            }
+                        }
+                    } while (!validInput);
+                break;
                 case 3:
-                    System.out.println("Enter the number of the song you would like to add: ");
-                    songNum = scnr.nextInt();
-                    while (songNum >=1 && songNum > disasterAverted.length) {
-                        System.out.println("Invalid option. Please enter a valid option.");
-                        System.out.println("Enter the number of the song you would like to add: ");
+                    printOpenUp2(openUp, openTimes);
+                    validInput = false;
+                    do { 
+                        System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
                         songNum = scnr.nextInt();
-                    }
-                    if (seconds - disasterTimes[songNum - 1] < 0) {
-                        System.out.println("That song is too long for the setlist. Please enter a valid option.");
-                        System.out.println("Enter the number of the song you would like to add: ");
-                        songNum = scnr.nextInt();
-                    }
-                    else {
-                        seconds -= disasterTimes[songNum - 1];
-                        numOfSongs++;
-                    }
-                    break;
+                        if (songNum == 0) {
+                            break;
+                        }
+                        if (songNum > openUp.length) {
+                            System.out.println("Invalid option. Please enter a valid option.");
+                        }
+                        if (songNum <= 0) {
+                            System.out.println("Invalid option. Please enter a valid option.");
+                        }
+                        while (songNum >= 1 && songNum > openUp.length) {
+                            System.out.println("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                            songNum = scnr.nextInt();
+                        }
+                        if (seconds - openTimes[songNum - 1] < 0) {
+                            System.out.println("That song is too long for the setlist. Please enter a valid option.");
+                            System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                            songNum = scnr.nextInt();
+                        }
+                        else {
+                            if (setlist.contains(openUp[songNum - 1])) {
+                                System.out.println("That song is already in the setlist. Please enter a valid option.");
+                                System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                                songNum = scnr.nextInt();
+                            }
+                            if (songNum == 0) {
+                                break;
+                            }
+                            else if (!setlist.contains(wastedTime[songNum -1])) {
+                                setlist.add(openUp[songNum - 1]);
+                                System.out.println("Added song: " + openUp[songNum - 1]);
+                                duration.add(openTimes[songNum -1]);
+                                seconds -= openTimes[songNum - 1];
+                                numOfSongs++;
+                                validInput = true;
+                                break;
+                            }
+                            else {
+                                System.out.println("That song is already in the setlist. Please enter a valid option.");
+                            }
+                        }
+                    } while (!validInput);
+                break;
                 case 4:
-                    System.out.println("Enter the number of the song you would like to add: ");
-                    songNum = scnr.nextInt();
-                    while (songNum >=1 && songNum > gotTime.length) {
-                        System.out.println("Invalid option. Please enter a valid option.");
-                        System.out.println("Enter the number of the song you would like to add: ");
+                    printGotTime2(gotTime, gotTimes);
+                    validInput = false;
+                    do { 
+                        System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
                         songNum = scnr.nextInt();
-                    }
-                    if (seconds - gotTimes[songNum - 1] < 0) {
-                        System.out.println("That song is too long for the setlist. Please enter a valid option.");
-                        System.out.println("Enter the number of the song you would like to add: ");
-                        songNum = scnr.nextInt();
-                    }
-                    else {
-                        seconds -= gotTimes[songNum - 1];
-                        numOfSongs++;
-                    }
-                    break;
+                        if (songNum == 0) {
+                            break;
+                        }
+                        if (songNum > gotTime.length) {
+                            System.out.println("Invalid option. Please enter a valid option.");
+                        }
+                        if (songNum <= 0) {
+                            System.out.println("Invalid option. Please enter a valid option.");
+                        }
+                        while (songNum >= 1 && songNum > gotTime.length) {
+
+                            System.out.println("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                            songNum = scnr.nextInt();
+                        }
+                        if (seconds - gotTimes[songNum - 1] < 0) {
+                            System.out.println("That song is too long for the setlist. Please enter a valid option.");
+                            System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                            songNum = scnr.nextInt();
+                        }
+                        else {
+                            if (setlist.contains(gotTime[songNum - 1])) {
+                                System.out.println("That song is already in the setlist. Please enter a valid option.");
+                                System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                                songNum = scnr.nextInt();
+                            }
+                            if (songNum == 0) {
+                                break;
+                            }
+                            else if (!setlist.contains(gotTime[songNum -1])){
+                                setlist.add(gotTime[songNum - 1]);
+                                System.out.println("Added song: " + gotTime[songNum - 1]);
+                                duration.add(gotTimes[songNum -1]);
+                                seconds -= gotTimes[songNum - 1];
+                                numOfSongs++;
+                                validInput = true;
+                                break;
+                            }
+                        }
+                    } while (!validInput);
+                break;
                 case 5:
-                    System.out.println("Enter the number of the song you would like to add: ");
-                    songNum = scnr.nextInt();
-                    while (songNum >=1 && songNum > singles.length) {
-                        System.out.println("Invalid option. Please enter a valid option.");
-                        System.out.println("Enter the number of the song you would like to add: ");
+                    printSingles2(singles, singleTimes);
+                    validInput = false;
+                    do { 
+                        System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
                         songNum = scnr.nextInt();
-                    }
-                    if (seconds - singleTimes[songNum - 1] < 0) {
-                        System.out.println("That song is too long for the setlist. Please enter a valid option.");
-                        System.out.println("Enter the number of the song you would like to add: ");
-                        songNum = scnr.nextInt();
-                    }
-                    else {
-                        seconds -= singleTimes[songNum - 1];
-                        numOfSongs++;
-                    }
-                    break;
+                        if (songNum == 0) {
+                            break;
+                        }
+                        if (songNum > wastedTime.length) {
+                            System.out.println("Invalid option. Please enter a valid option.");
+                        }
+                        if (songNum <= 0) {
+                            System.out.println("Invalid option. Please enter a valid option.");
+                        }
+                        while (songNum >= 1 && songNum > singles.length) {
+                            System.out.println("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                            songNum = scnr.nextInt();
+                        }
+                        if (seconds - singleTimes[songNum - 1] < 0) {
+                            System.out.println("That song is too long for the setlist. Please enter a valid option.");
+                            System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                            songNum = scnr.nextInt();
+                        }
+                        else {
+                            if (setlist.contains(singles[songNum - 1])) {
+                                System.out.println("That song is already in the setlist. Please enter a valid option.");
+                                System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                                songNum = scnr.nextInt();
+                            }
+                            if (songNum == 0) {
+                                break;
+                            }
+                            else if (!setlist.contains(singles[songNum -1])) {
+                                setlist.add(singles[songNum - 1]);
+                                System.out.println("Added song: " + singles[songNum - 1]);
+                                duration.add(singleTimes[songNum -1]);
+                                seconds -= singleTimes[songNum - 1];
+                                numOfSongs++;
+                                validInput = true;
+                                break;
+                            }
+                            else {
+                                System.out.println("That song is already in the setlist. Please enter a valid option.");
+                            }
+                        }
+                    } while (!validInput);
+                break;
                 case 6:
-                    System.out.println("Enter the number of the song you would like to add: ");
-                    songNum = scnr.nextInt();
-                    while (songNum >= 1 && songNum > covers.length) {
-                        System.out.println("Invalid option. Please enter a valid option.");
-                        System.out.println("Enter the number of the song you would like to add: ");
+                    printCovers2(covers, coverTimes);
+                    validInput = false;
+                    do { 
+                        System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
                         songNum = scnr.nextInt();
-                    }
-                    if (seconds - coverTimes[songNum - 1] < 0) {
-                        System.out.println("That song is too long for the setlist. Please enter a valid option.");
-                        System.out.println("Enter the number of the song you would like to add: ");
-                        songNum = scnr.nextInt();
-                    }
-                    else {
-                        seconds -= coverTimes[songNum - 1];
-                        numOfSongs++;
-                    }
-                    break;
+                        if (songNum == 0) {
+                            break;
+                        }
+                        if (songNum > wastedTime.length) {
+                            System.out.println("Invalid option. Please enter a valid option.");
+                        }
+                        if (songNum <= 0) {
+                            System.out.println("Invalid option. Please enter a valid option.");
+                        }
+                        while (songNum >= 1 && songNum > covers.length) {
+                            System.out.println("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                            songNum = scnr.nextInt();
+                        }
+                        if (seconds - coverTimes[songNum - 1] < 0) {
+                            System.out.println("That song is too long for the setlist. Please enter a valid option.");
+                            System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                            songNum = scnr.nextInt();
+                        }
+                        else {
+                            if (setlist.contains(covers[songNum - 1])) {
+                                System.out.println("That song is already in the setlist. Please enter a valid option.");
+                                System.out.print("Enter the number of the song you would like to add, or enter 0 to go back: ");
+                                songNum = scnr.nextInt();
+                            }
+                            if (songNum == 0) {
+                                break;
+                            }
+                            else if (!setlist.contains(covers[songNum -1])) {
+                                setlist.add(covers[songNum - 1]);
+                                System.out.println("Added song: " + covers[songNum - 1]);
+                                duration.add(coverTimes[songNum -1]);
+                                seconds -= coverTimes[songNum - 1];
+                                numOfSongs++;
+                                validInput = true;
+                                break;
+                            }
+                            else {
+                                System.out.println("That song is already in the setlist. Please enter a valid option.");
+                            }
+                        }
+                    } while (true);
+                break;
                 case 7:
-                    System.out.println("Enter the number of the song you would like to remove: ");
+                    System.out.printf("%nSetlist so far: %n");
+                    int setCounter = 1;
+                    for (String song: setlist) {
+                        System.out.println(setCounter++ + ". " + song);
+                    }
+                    System.out.println();
+                    System.out.print("Enter the number of the song you would like to remove, or enter 0 to go back: ");
                     songNum = scnr.nextInt();
-                    while (songNum >= 1 && songNum > setlist.size()) {
+                    if (songNum == 0) {
+                        break;
+                    }
+                    if (songNum > setlist.size()) {
                         System.out.println("Invalid option. Please enter a valid option.");
-                        System.out.println("Enter the number of the song you would like to remove: ");
+                    }
+                    if (songNum <= 0) {
+                        System.out.println("Invalid option. Please enter a valid option.");
+                    }
+                    while (songNum >= 1 && songNum > setlist.size()) {
+                        System.out.print("Enter the number of the song you would like to remove, or enter 0 to go back: ");
                         songNum = scnr.nextInt();
                     }
                     seconds += duration.get(songNum -1);
@@ -318,19 +576,64 @@ public class Setlist{
                     setlist.remove(songNum - 1);
                     duration.remove(songNum -1);
                     numOfSongs--;
-                    break;
-                }
-                System.out.printf("%nSetlist so far: %n");
-                int setCounter = 1;
-                for (String song: setlist) {
-                    System.out.println(setCounter++ + ". " + song);
-                }
-                System.out.println(numOfSongs + " songs");
-                System.out.println((seconds / 60) + ":" + (seconds % 60) + " remaining");
-                System.out.println();
-                System.out.printf("1. Add a song from Wasted Time%n2. Add a song from Disaster Averted%n3. Add a song from Open Up%n4. Add a song from Got Time%n5. Add a song from Singles%n6. Add a song from Covers%n7 to delete a song%n0 to quit%nEnter Choice: ");
-                songChoice = scnr.nextInt();
+                break;
+                case 0:
+                    printMenu();
+                break;
             }
+            System.out.printf("%nSetlist so far: %n");
+            int setCounter = 1;
+            for (String song: setlist) {
+                System.out.println(setCounter++ + ". " + song);
+            }
+            System.out.println(numOfSongs + " songs");
+            int minutes = seconds / 60;
+            int remainingSeconds = seconds % 60;
+            if (remainingSeconds == 0) {
+                System.out.println(minutes + ":00 remaining");
+            }
+            else if (remainingSeconds < 10) {
+                System.out.println(minutes + ":0" + remainingSeconds + " remaining");
+            }
+            else {
+                System.out.println(minutes + ":" + remainingSeconds + " remaining");
+            }
+            System.out.println();
+            System.out.printf("1. Add a song from Wasted Time%n2. Add a song from Disaster Averted%n3. Add a song from Open Up%n4. Add a song from Got Time%n5. Add a song from Singles%n6. Add a song from Covers%n7 to delete a song%n0 to quit%n%nEnter Choice: ");
+            songChoice = scnr.nextInt();
+        }
+            System.out.printf("%nSetlist complete!%n%n");
+            System.out.println("Setlist: ");
+            int setCounter = 1;
+            for (String song: setlist) {
+                System.out.println(setCounter++ + ". " + song);
+            }
+            System.out.println();
+            System.out.println(numOfSongs + " songs");
+            int minutes = seconds / 60;
+            int remainingSeconds = seconds % 60;
+            if (remainingSeconds == 0) {
+                System.out.println(minutes + ":00 remaining");
+            }
+            else if (remainingSeconds < 10) {
+                System.out.println(minutes + ":0" + remainingSeconds + " remaining");
+            }
+            else {
+                System.out.println(minutes + ":" + remainingSeconds + " remaining");
+            }
+            System.out.println();
+    }
+
+    public static void readFile(String fileName) {
+        try (BufferedReader br = new BufferedReader (new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file " + fileName);
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void main(String[] args) {
@@ -348,11 +651,14 @@ public class Setlist{
         long[] coverTimes = new long[]{201, 290, 279, 180};
         String menuOption;
 
+        String fileName = "/setlist/wolfjob.txt";
+
+
         boolean continueProgram = true;
         while (continueProgram){
             printMenu();
             menuOption = scnr.next();
-            while (!menuOption.equals("1") && !menuOption.equals("2") && !menuOption.equals("q")) {
+            while (!menuOption.equals("1") && !menuOption.equals("2") && !menuOption.equals("q") && !menuOption.equals("w")) {
                 System.out.println("Invalid option. Idiot.");
                 printMenu();
                 menuOption = scnr.next();
@@ -363,8 +669,9 @@ public class Setlist{
               break;
             case "2": // view the songs
                 printMenu2(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes);
-
                 break;
+            case "w":
+                readFile(fileName);
             case "q": // quit
                 continueProgram = false;
                 break;
