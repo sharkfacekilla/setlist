@@ -1,4 +1,4 @@
-import java.util.Scanner; // import Scanner class
+import java.util.Scanner; // import stuff
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.io.BufferedReader;
@@ -9,23 +9,18 @@ import java.io.IOException;
 public class Setlist{
 
     static Scanner scnr = new Scanner(System.in);
-/*
-    public static void wolfjob() {
-        Scanner fileIn = new Scanner(new File("wolfjob.txt"));
-        System.out.println(fileIn.nextLine());
-    }
-    */
-    public static void printMenu2 (String wastedTime[], long wastedTimes[], String openUp[], long openTimes[], String disasterAverted[], long[] disasterTimes, String gotTime[], long[] gotTimes, String singles[], long[] singleTimes, String covers[], long[] coverTimes) {
-        while (true) {
-            System.out.printf("%n-----------Albums-------------%n%n");
+
+    public static void printMenu2 (String wastedTime[], long wastedTimes[], String openUp[], long openTimes[], String disasterAverted[], long[] disasterTimes, String gotTime[], long[] gotTimes, String singles[], long[] singleTimes, String covers[], long[] coverTimes, boolean exit) {
+        exit = false;
+        while (!exit) {
+            System.out.printf("%n|--------------------- Albums -------------------|%n%n");
             System.out.println("1. Wasted Time");
             System.out.println("2. Disaster Averted");
-            System.out.printf("%n-----------EP's-------------%n%n");
+            System.out.printf("%n|-------------------- EP's ----------------------|%n%n");
             System.out.println("3. Open Up");
             System.out.println("4. Got Time");
-            System.out.printf("%n-----------Singles-------------%n%n");
-            System.out.println("5. Singles");
-            System.out.printf("%n-----------Covers-------------%n%n");
+            System.out.printf("%n|---------------- Everything Else ---------------|%n%n");
+            System.out.printf("5. Singles%n");
             System.out.println("6. Covers");
             System.out.printf("%nm - Return to Main Menu%n%n");
             System.out.print("Choose an option: ");
@@ -38,17 +33,30 @@ public class Setlist{
             }
             switch (choice) {
                 case "1":
-                    printWastedTime(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes);
+                    exit = printWastedTime(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes, exit);
                     break;
                 case "2":
-                    //printDisasterAverted(wastedTime, wastedTimes, disasterAverted, disasterTimes, openUp, openTimes, wastedTime, wastedTimes, gotTime, gotTimes, singles, singleTimes, covers,
-                    //coverTimes);
+                    exit = printDisasterAverted(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes, exit);
+                    break;
+                case "3":
+                    exit = printOpenUp(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes, exit);
+                    break;
+                case "4":
+                    exit = printGotTime(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes, exit);
+                    break;
+                case "5":
+                    exit = printSingles(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes, exit);
+                    break;
+                case "6":
+                    exit = printCovers(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes,exit);
                     break;
                 case "m":
-                    return;
+                    exit = true;
+                    break;
             }
         }
     }
+    
 
     public static void printWastedTime2(String wastedTime[], long wastedTimes[]) {
         int counter = 1;
@@ -153,10 +161,10 @@ public class Setlist{
         System.out.println();
     }
 
-    public static void printWastedTime(String wastedTime[], long wastedTimes[], String openUp[], long openTimes[], String disasterAverted[], long[] disasterTimes, String gotTime[], long[] gotTimes, String singles[], long[] singleTimes, String covers[], long[] coverTimes) {
+    public static boolean printWastedTime(String wastedTime[], long wastedTimes[], String openUp[], long openTimes[], String disasterAverted[], long[] disasterTimes, String gotTime[], long[] gotTimes, String singles[], long[] singleTimes, String covers[], long[]  coverTimes, boolean exitToMain) {
         int counter = 1;
         String choice;
-        System.out.printf("%n|-----------------Wasted Time-----------------|%n%n");
+        System.out.printf("%n|------------------Wasted Time-------------------|%n%n");
         for (int i = 0; i < wastedTime.length; i++) {
             long minutes = (int) TimeUnit.SECONDS.toMinutes(wastedTimes[i]);
             long seconds = (int) wastedTimes[i] - (TimeUnit.MINUTES.toSeconds(minutes));
@@ -175,63 +183,193 @@ public class Setlist{
             System.out.print("Enter 'b' to go back, or 'm' to go back to the main menu: ");
             choice = scnr.next();
             if (choice.equals("b")) {
-                printMenu2(wastedTime , wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes);
-                return;
-            }
-            else {
-                printMenu();
-                return;
+                printMenu2(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes, exitToMain);
             }
         }
+        if (choice.equals("m")) {
+            exitToMain = true;
+        }
+
+        return exitToMain;
     }
-/*
-    public static void printDisasterAverted(String disasterAverted[], long disasterTimes[]) {
+
+    public static boolean printDisasterAverted(String wastedTime[], long wastedTimes[], String openUp[], long openTimes[], String disasterAverted[], long[] disasterTimes, String gotTime[], long[] gotTimes, String singles[], long[] singleTimes, String covers[], long[]  coverTimes, boolean exitToMain) {
+
+        
         int counter = 1;
-        System.out.println();
+        String choice;
+        System.out.printf("%n|--------------- Disaster Averted --------------|%n%n");
         for (int i = 0; i < disasterAverted.length; i++) {
             long minutes = (int) TimeUnit.SECONDS.toMinutes(disasterTimes[i]);
             long seconds = (int) disasterTimes[i] - (TimeUnit.MINUTES.toSeconds(minutes));
+
             if (counter < 10) {
-            System.out.printf("%d. %-40s %2d:%02d\n", counter++, disasterAverted[i], minutes, seconds);
+                System.out.printf("%d. %-40s %2d:%02d\n", counter++, disasterAverted[i], minutes, seconds);
             }
             else {
                 System.out.printf("%d. %-39s %2d:%02d\n", counter++, disasterAverted[i], minutes, seconds);
             }
         }
-    }
-*/
-    /*
-    public static viewAllSongs(String wastedTime[], String openUp[], String disasterAverted[], String gotTime[], String singles[], String covers[]) {
-        String menuOption;
-        do {
-        printMenu2();
-        menuOption = scnr.nextLine();
-            while (!menuOption.equals("1") && !menuOption.equals("2") && !menuOption.equals("3") && !menuOption.equals("4") && !menuOption.equals("5") && !menuOption.equals("6") !menuOption.equals("q")) {
-                System.out.println("Invalid option. Please enter a valid option.");
-                menuOption = scnr.nextLine();
+        System.out.printf("%nb - Return to Previous Menu%nm - Return to Main Menu%nEnter Choice: ");
+        choice = scnr.next();
+        while (!choice.equals("b") && !choice.equals("m")) {
+            System.out.println("Invalid option. Please enter a valid option.");
+            System.out.print("Enter 'b' to go back, or 'm' to go back to the main menu: ");
+            choice = scnr.next();
+            if (choice.equals("b")) {
+                printMenu2(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes, exitToMain);
             }
         }
-
-        switch (menuOption) {
-            case "1":
-                System.out.println(wastedTime[]);
-            case "2":
-            case "3":
-            case "4":
-            case "5":
-            case "6":
+        if (choice.equals("m")) {
+            exitToMain = true;
         }
-
+        
+        return exitToMain;
     }
-*/
+
+    public static boolean printOpenUp(String wastedTime[], long wastedTimes[], String openUp[], long openTimes[], String disasterAverted[], long[] disasterTimes, String gotTime[], long[] gotTimes, String singles[], long[] singleTimes, String covers[], long[]  coverTimes, boolean exitToMain) {
+
+        
+        int counter = 1;
+        String choice;
+        System.out.printf("%n|------------------- Open Up EP -----------------|%n%n");
+        for (int i = 0; i < openUp.length; i++) {
+            long minutes = (int) TimeUnit.SECONDS.toMinutes(openTimes[i]);
+            long seconds = (int) openTimes[i] - (TimeUnit.MINUTES.toSeconds(minutes));
+
+            if (counter < 10) {
+                System.out.printf("%d. %-40s %2d:%02d\n", counter++, openUp[i], minutes, seconds);
+            }
+            else {
+                System.out.printf("%d. %-39s %2d:%02d\n", counter++, openUp[i], minutes, seconds);
+            }
+        }
+        System.out.printf("%nb - Return to Previous Menu%nm - Return to Main Menu%nEnter Choice: ");
+        choice = scnr.next();
+        while (!choice.equals("b") && !choice.equals("m")) {
+            System.out.println("Invalid option. Please enter a valid option.");
+            System.out.print("Enter 'b' to go back, or 'm' to go back to the main menu: ");
+            choice = scnr.next();
+            if (choice.equals("b")) {
+                printMenu2(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes, exitToMain);
+            }
+        }
+        if (choice.equals("m")) {
+            exitToMain = true;
+        }
+        
+        return exitToMain;
+    }
+
+    public static boolean printGotTime(String wastedTime[], long wastedTimes[], String openUp[], long openTimes[], String disasterAverted[], long[] disasterTimes, String gotTime[], long[] gotTimes, String singles[], long[] singleTimes, String covers[], long[]  coverTimes, boolean exitToMain) {
+
+        
+        int counter = 1;
+        String choice;
+        System.out.printf("%n|------------------ Got Time EP -----------------|%n%n");
+        for (int i = 0; i < gotTime.length; i++) {
+            long minutes = (int) TimeUnit.SECONDS.toMinutes(gotTimes[i]);
+            long seconds = (int) gotTimes[i] - (TimeUnit.MINUTES.toSeconds(minutes));
+
+            if (counter < 10) {
+                System.out.printf("%d. %-40s %2d:%02d\n", counter++, gotTime[i], minutes, seconds);
+            }
+            else {
+                System.out.printf("%d. %-39s %2d:%02d\n", counter++, gotTime[i], minutes, seconds);
+            }
+        }
+        System.out.printf("%nb - Return to Previous Menu%nm - Return to Main Menu%nEnter Choice: ");
+        choice = scnr.next();
+        while (!choice.equals("b") && !choice.equals("m")) {
+            System.out.println("Invalid option. Please enter a valid option.");
+            System.out.print("Enter 'b' to go back, or 'm' to go back to the main menu: ");
+            choice = scnr.next();
+            if (choice.equals("b")) {
+                printMenu2(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes, exitToMain);
+            }
+        }
+        if (choice.equals("m")) {
+            exitToMain = true;
+        }
+        
+        return exitToMain;
+    }
+
+    public static boolean printSingles(String wastedTime[], long wastedTimes[], String openUp[], long openTimes[], String disasterAverted[], long[] disasterTimes, String gotTime[], long[] gotTimes, String singles[], long[] singleTimes, String covers[], long[]  coverTimes, boolean exitToMain) {
+
+        
+        int counter = 1;
+        String choice;
+        System.out.printf("%n|-------------------- Singles -------------------|%n%n");
+        for (int i = 0; i < singles.length; i++) {
+            long minutes = (int) TimeUnit.SECONDS.toMinutes(singleTimes[i]);
+            long seconds = (int) singleTimes[i] - (TimeUnit.MINUTES.toSeconds(minutes));
+
+            if (counter < 10) {
+                System.out.printf("%d. %-40s %2d:%02d\n", counter++, singles[i], minutes, seconds);
+            }
+            else {
+                System.out.printf("%d. %-39s %2d:%02d\n", counter++, singles[i], minutes, seconds);
+            }
+        }
+        System.out.printf("%nb - Return to Previous Menu%nm - Return to Main Menu%nEnter Choice: ");
+        choice = scnr.next();
+        while (!choice.equals("b") && !choice.equals("m")) {
+            System.out.println("Invalid option. Please enter a valid option.");
+            System.out.print("Enter 'b' to go back, or 'm' to go back to the main menu: ");
+            choice = scnr.next();
+            if (choice.equals("b")) {
+                printMenu2(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes, exitToMain);
+            }
+        }
+        if (choice.equals("m")) {
+            exitToMain = true;
+        }
+        
+        return exitToMain;
+    }
+
+    public static boolean printCovers(String wastedTime[], long wastedTimes[], String openUp[], long openTimes[], String disasterAverted[], long[] disasterTimes, String gotTime[], long[] gotTimes, String singles[], long[] singleTimes, String covers[], long[]  coverTimes, boolean exitToMain) {
+
+        
+        int counter = 1;
+        String choice;
+        System.out.printf("%n|--------------------- Covers -------------------|%n%n");
+        for (int i = 0; i < covers.length; i++) {
+            long minutes = (int) TimeUnit.SECONDS.toMinutes(coverTimes[i]);
+            long seconds = (int) coverTimes[i] - (TimeUnit.MINUTES.toSeconds(minutes));
+
+            if (counter < 10) {
+                System.out.printf("%d. %-40s %2d:%02d\n", counter++, covers[i], minutes, seconds);
+            }
+            else {
+                System.out.printf("%d. %-39s %2d:%02d\n", counter++, covers[i], minutes, seconds);
+            }
+        }
+        System.out.printf("%nb - Return to Previous Menu%nm - Return to Main Menu%nEnter Choice: ");
+        choice = scnr.next();
+        while (!choice.equals("b") && !choice.equals("m")) {
+            System.out.println("Invalid option. Please enter a valid option.");
+            System.out.print("Enter 'b' to go back, or 'm' to go back to the main menu: ");
+            choice = scnr.next();
+            if (choice.equals("b")) {
+                printMenu2(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes, exitToMain);
+            }
+        }
+        if (choice.equals("m")) {
+            exitToMain = true;
+        }
+        
+        return exitToMain;
+    }
 
     public static void printMenu() {
         System.out.printf("%n SUPREME REMEDY SETLIST GENERATOR%n%n");
-        System.out.printf("-------------MAIN MENU------------%n%n");
+        System.out.printf("|------------------- MAIN MENU ------------------|%n%n");
         System.out.println("1 - Build a setlist");
         System.out.println("2 - View all songs");
         System.out.printf("q - Quit%n%n");
-        System.out.printf("----------------------------------%n%n");
+        System.out.printf("|------------------------------------------------|%n%n");
         System.out.print("Choose an option: ");
     }
 
@@ -243,7 +381,7 @@ public class Setlist{
         int numOfSongs = 0;
         ArrayList<String> setlist = new ArrayList<String>();
         ArrayList<Long> duration = new ArrayList<Long>();
-        System.out.printf("%n------------ OPTIONS --------------%n%n");
+        System.out.printf("%n|------------------ OPTIONS ---------------------|%n%n");
         System.out.printf("1. Add a song from Wasted Time%n2. Add a song from Disaster Averted%n3. Add a song from Open Up%n4. Add a song from Got Time%n5. Add a song from Singles%n6. Add a song from Covers%n7 to delete a song%n0 to quit%n%nEnter Choice: ");
         int songChoice = scnr.nextInt();
         int songNum;
@@ -650,8 +788,9 @@ public class Setlist{
         String[] covers = new String[]{"R U Mine?", "Make It Wit Chu", "Moonage Daydream", "Woman"};
         long[] coverTimes = new long[]{201, 290, 279, 180};
         String menuOption;
+        boolean exitToMain = false;
 
-        String fileName = "/setlist/wolfjob.txt";
+        String fileName = "F:/git/setlist/wolfjob.txt";
 
 
         boolean continueProgram = true;
@@ -668,7 +807,7 @@ public class Setlist{
                 buildSetlist(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes);
               break;
             case "2": // view the songs
-                printMenu2(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes);
+                printMenu2(wastedTime, wastedTimes, openUp, openTimes, disasterAverted, disasterTimes, gotTime, gotTimes, singles, singleTimes, covers, coverTimes, exitToMain);
                 break;
             case "w":
                 readFile(fileName);
