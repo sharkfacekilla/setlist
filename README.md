@@ -10,3 +10,8 @@ To use "Build a setlist":
 1. Enter length of set in minutes
 2. Add songs
 3. Program will keep track of length and tell you if you have tried to add duplicate track, or over time.
+
+TODO:
+1. Make 1 method to display albums instead of multiple.
+2. Make it work
+3. Add GUI
